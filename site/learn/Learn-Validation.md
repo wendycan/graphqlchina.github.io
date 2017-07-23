@@ -1,24 +1,19 @@
 ---
-title: Validation
+title: 校验（Validation）
 layout: ../_core/DocsLayout
 category: Learn
 permalink: /learn/validation/
 next: /learn/execution/
 ---
 
-By using the type system, it can be predetermined whether a GraphQL query
-is valid or not. This allows servers and clients to effectively inform
-developers when an invalid query has been created, without having to rely
-on runtime checks.
+通过使用类型系统，一个 GraphQL 查询可以预先判断是否合法。
+这样在创建了一个不合法的查询时服务端和客户端都可以有效的通知开发者，而不需要依赖运行时校验。
 
-For our Star Wars example, the file
-[starWarsValidation-test.js](https://github.com/graphql/graphql-js/blob/master/src/__tests__/starWarsValidation-test.js)
-contains a number of queries demonstrating various invalidities, and is a test
-file that can be run to exercise the reference implementation's validator.
+在我们的星球大战示例中，
+文件 [starWarsValidation-test.js](https://github.com/graphql/graphql-js/blob/master/src/__tests__/starWarsValidation-test.js)
+包含了多种无效查询的演示，可以用来测试相关实现的校验器。
 
-To start, let's take a complex valid query. This is a nested query, similar to
-an example from the previous section, but with the duplicated fields factored
-out into a fragment:
+首先，让我们看一个复杂的合法查询。这是一个和上一节例子相似的嵌套查询，但将重复的字段提取到了一个片段中：
 
 ```graphql
 # { "graphiql": true }
@@ -40,11 +35,10 @@ fragment NameAndAppearances on Character {
 }
 ```
 
-And this query is valid. Let's take a look at some invalid queries...
+可以看到这个查询是合法的。让我们再看看一些不合法的查询...
 
-A fragment cannot refer to itself or create a cycle, as this could result in
-an unbounded result! Here's the same query above but without the explicit three
-levels of nesting:
+一个片段不能引用它自己或创建一个循环，否则可能会产生一个无穷的结果！这是一个和上面一样，
+但没有显式指定三层嵌套层级的查询：
 
 ```graphql
 # { "graphiql": true }
@@ -63,14 +57,13 @@ fragment NameAndAppearancesAndFriends on Character {
 }
 ```
 
-When we query for fields, we have to query for a field that exists on the
-given type. So as `hero` returns a `Character`, we have to query for a field
-on `Character`. That type does not have a `favoriteSpaceship` field, so this
-query is invalid:
+当我们查询字段时，该字段必须在所给的类型中存在。因此当 `hero` 返回一个 `Character` 时，
+我们查询的必须是 `Character` 中含有的字段。这个类型并没有 `favoriteSpaceship` 字段，
+所以这个查询是不合法的：
 
 ```graphql
 # { "graphiql": true }
-# INVALID: favoriteSpaceship does not exist on Character
+# 不合法：Charcter 中不存在 favoriteSpaceship
 {
   hero {
     favoriteSpaceship
@@ -78,25 +71,23 @@ query is invalid:
 }
 ```
 
-Whenever we query for a field and it returns something other than a scalar
-or an enum, we need to specify what data we want to get back from the field.
-Hero returns a `Character`, and we've been requesting fields like `name` and
-`appearsIn` on it; if we omit that, the query will not be valid:
+只要我们查询的某个字段的返回结果不是一个直接量或枚举，我们就需要指明这个字段中有哪些是我
+们需要的。`Hero` 返回一个 `Character`，我们需要请求其中 `name` 和 `appersIn` 之类的
+字段。如果我们遗漏了，这个查询就不合法：
 
 ```graphql
 # { "graphiql": true }
-# INVALID: hero is not a scalar, so fields are needed
+# 不合法: hero 不是一个直接量，因此需要指明其中的附加字段
 {
   hero
 }
 ```
 
-Similarly, if a field is a scalar, it doesn't make sense to query for
-additional fields on it, and doing so will make the query invalid:
+类似的，如果字段是一个直接量，再去查询其附加的字段就说不通了，这样做也会让查询不合法：
 
 ```graphql
 # { "graphiql": true }
-# INVALID: name is a scalar, so fields are not permitted
+# 不合法: name 是一个直接量，因此附加字段是不允许的
 {
   hero {
     name {
@@ -106,14 +97,12 @@ additional fields on it, and doing so will make the query invalid:
 }
 ```
 
-Earlier, it was noted that a query can only query for fields on the type
-in question; when we query for `hero` which returns a `Character`, we
-can only query for fields that exist on `Character`. What happens if we
-want to query for R2-D2s primary function, though?
+前面我们提到过只能查询类型中拥有字段的问题。当我们查询返回一个 `Character` 的 `hero` 时，
+我们只能查询 Character 中含有的字段。那么当我们想查询 R2-D2 的主要功能时会怎样呢？
 
 ```graphql
 # { "graphiql": true }
-# INVALID: primaryFunction does not exist on Character
+# 不合法: Character 中不存在 primaryFunction
 {
   hero {
     name
@@ -122,12 +111,10 @@ want to query for R2-D2s primary function, though?
 }
 ```
 
-That query is invalid, because `primaryFunction` is not a field on `Character`.
-We want some way of indicating that we wish to fetch `primaryFunction` if the
-`Character` is a `Droid`, and to ignore that field otherwise. We can use
-the fragments we introduced earlier to do this. By setting up a fragment defined
-on `Droid` and including it, we ensure that we only query for `primaryFunction`
-where it is defined.
+这个查询是不合法的，因为 `primaryFunction` 不是 `Character` 的一个字段。我们需要一种方法去
+表明当这个 `Character` 是一个 `Droid` 的时候则需要请求 `primaryFunction`，反之则忽略它。
+我们可以使用之前介绍的片段做到这一点。通过设置一个定义在 `Droid` 上的片段并包含它，我们可以
+确保只有在 `primaryFunction` 被定义了的地方才会查询到。
 
 ```graphql
 # { "graphiql": true }
@@ -143,11 +130,9 @@ fragment DroidFields on Droid {
 }
 ```
 
-This query is valid, but it's a bit verbose; named fragments were valuable
-above when we used them multiple times, but we're only using this one once.
-Instead of using a named fragment, we can use an inline fragment; this
-still allows us to indicate the type we are querying on, but without naming
-a separate fragment:
+查询合法了，但是有些累赘。命名片段的价值体现在可以使用多次上，但这里我们只需要使用它一次。
+这时可以使用一个内联的片段替代它。这样依然允许我们指定查询依赖的特定类型，但不需要额外定义
+一个单独的片段了：
 
 ```graphql
 # { "graphiql": true }
@@ -161,10 +146,7 @@ a separate fragment:
 }
 ```
 
-This has just scratched the surface of the validation system; there
-are a number of validation rules in place to ensure that a GraphQL query
-is semantically meaningful. The specification goes into more detail about this
-topic in the "Validation" section, and the
+这些只是校验系统的牛毛一角，有大量的校验规则去确保一个 GraphQL 查询在语义上是有意义的。规范
+在『校验』章节中深入的阐述了更多细节，同时在 GraphQL.js 项目的
 [validation](https://github.com/graphql/graphql-js/blob/master/src/validation)
-directory in GraphQL.js contains code implementing a
-specification-compliant GraphQL validator.
+目录下包含了一个符合规范的 GraphQL 校验器实现。
