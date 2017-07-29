@@ -36,7 +36,7 @@ module.exports = ({ page, section }) =>
           </div>
 
           <div className="marketing-col">
-            <h3>请求你想要的</h3>
+            <h3>询问你的需求</h3>
             <Prism language="graphql">
               {`{
   project(name: "GraphQL") {
@@ -71,11 +71,11 @@ module.exports = ({ page, section }) =>
     </div>
 
     <section className="lead">
-      <h1>一门 API 的查询语言</h1>
+      <h1>一门 API 查询语言</h1>
       <p>
-        GraphQL 是 API 的查询语言，也是用于实现对现有数据进行查询的运行时。
+        GraphQL 是 API 查询语言，也是用于实现对现有数据进行查询的运行时。
         GraphQL 提供了一套完整、可理解的 API 数据描述，使客户端可以只请求他们需要的数据，
-        而不会有更多其他的数据，这使得随着时间的推移，更容易地发展 API，并且支持强大的开发工具。
+        而不会有更多其他的数据，这使得随着时间的推移，API 的演进变得更加容易，并且有强大的开发工具。
       </p>
     </section>
 
@@ -84,9 +84,9 @@ module.exports = ({ page, section }) =>
         <h2>请求你需要的，仅仅得到你请求的</h2>
         {/*[Illustration: just a simple query and response?]*/}
         <p>
-          发送一个 GraphQL 查询到你的 API，然后得到你需要的数据，没有多余的，也没有缺失的。
-          GraphQL 查询总是返回可预测的结果。GraphQL 的应用程序是快速和稳定的，
-          因为获得的数据是由他们控制的，而不是服务器。</p>
+          发送一条 GraphQL 查询到你的 API，然后就能得到你需要的数据，这些数据不会多也不会少。
+          GraphQL 查询总是返回可预测的结果。GraphQL 的应用程序是快速且稳定的，
+          因为获得的数据是由它们控制的，而不是服务器。</p>
       </div>
       <div className="window faux-graphiql" aria-hidden>
         <div className="query">
@@ -179,7 +179,7 @@ module.exports = ({ page, section }) =>
           <h2>在一个请求里获取多个资源</h2>
           {/*Illustration: a query 2 or 3 levels deep]*/}
           <p>
-            GraphQL 查询不仅访问一个资源的属性，还可以按照它们之间的关系进行访问。
+            GraphQL 查询不仅访问一个资源的属性，还可以依照它们之间的关系。
             虽然典型的 REST API 需要从多个 URL 加载多个资源，
             但 GraphQL API 可以在单个请求中获取应用程序需要的所有数据。
             即使在较慢的移动网络下，使用 GraphQL 的应用也可以很快。
@@ -221,13 +221,14 @@ module.exports = ({ page, section }) =>
 
     <section className="point3" id="type-system">
       <div className="prose">
-        <h2>用类型系统描述什么是可能的</h2>
+        <h2>使用类型系统来描述什么是可能的</h2>
         {/*Illustration of a type IDL following a query by line]*/}
         {/*Under: a server <-> client (Capabilities, Requirements)]?*/}
         <p>
           GraphQL API 根据类型和字段进行组织，而不是 endpoint。
-          从单个 endpoint 上可以访问数据。GraphQL 使用类型来确保应用程序只会请求可能的数据，
-          并提供清晰有用的错误信息。应用程序可以使用类型来避免编写手动解析代码。
+          从单一的端点上可以访问到你所需要的全部数据。
+          GraphQL 使用类型来确保应用程序只会请求可能的数据，并提供清晰有用的错误信息。
+          应用程序可以使用类型来避免编写手动解析代码。
         </p>
       </div>
       <div className="window strong-typed-query" aria-hidden>
@@ -301,11 +302,11 @@ type Species {
     <div className="darkWash">
     <section className="point4" id="powerful-tools">
       <div className="prose">
-        <h2>使用强大的开发工具快速开发</h2>
+        <h2>强大的开发工具让你快速开发</h2>
         {/*Illustration of GraphiQL validation error and typeahead, animated?]*/}
         <p>
-          不用离开编辑器就可以确切地知道从 API 请求到的数据，
-          在查询之前突出显示潜在的问题，并利用改进的代码补全等。
+          不需要离开你的编辑器，就可以确切地知道从 API 请求到的数据是什么结构，
+          在查询之前突出显示潜在的问题，还可以利用改进的代码补全等。
           GraphQL 可以通过利用 API 类型系统轻松构建 <a href="https://github.com/graphql/graphiql" target="_blank">Graph<em>i</em>QL</a> 等强大的工具。
         </p>
       </div>
@@ -320,13 +321,13 @@ type Species {
     <div className="grayWash">
     <section className="point5" id="without-versions">
       <div className="prose">
-        <h2>演进 API 不需要区分版本</h2>
+        <h2>演进 API 而不需要区分版本</h2>
         {/*Illustration showing more legs added to a graph? Or a type evolving over time?]*/}
         <p>
-          在 GraphQL API 中添加新的字段和类型，不会影响现有查询。
-          不推荐使用的字段可以通过工具被弃用并隐藏起来。
+          在 GraphQL API 中添加新的字段和类型，是不会影响现有查询的。
+          一些老的字段可以通过工具被隐藏并废弃。
           通过使用单一的演进版本，GraphQL API 使应用程序可以持续访问新功能，
-          并鼓励更加清洁、更加可维护的服务器代码。
+          并鼓励更加清洁、可维护的服务器代码。
         </p>
       </div>
       <div className="window type-evolution" aria-hidden>
@@ -429,11 +430,11 @@ type Person {
 
     <section className="point6" id="bring-your-own-code">
       <div className="prose">
-        <h2>在你的数据和代码中引入</h2>
+        <h2>带给你专属的数据和代码</h2>
         {/*Illustration of each field becoming a function?]*/}
         <p>
           GraphQL 在整个应用程序中创建统一的 API，而不受特定存储引擎的限制。
-          利用现有的数据和代码，使用 GraphQL 引擎（在很多语言中都有实现）编写 GraphQL API。
+          利用现有的数据和代码，使用 GraphQL 引擎（在很多语言中都有实现）可以编写 GraphQL API。
           你可以为类型系统中的每个字段提供函数，GraphQL 会以最佳的并发方式调用它们。
         </p>
       </div>
@@ -515,7 +516,7 @@ public class Character {
 
     <section className="powered-by" id="whos-using">
       <div className="prose">
-        <h2>谁做用 GraphQL?</h2>
+        <h2>谁在用 GraphQL?</h2>
         <p>
           Facebook 的移动应用程序自 2012 年以来一直由 GraphQL 提供支持。
           GraphQL 规范在 2015 年开源，现在可用于很多环境下，并被各种规模的团队使用。
